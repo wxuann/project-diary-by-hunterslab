@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hunterslab · field journal</title>
+<meta name="description" content="A solo founder's thinking journal — voice-first, AI-augmented, deeply personal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --bg-2: #14130f;
+    --bg-3: #1c1a16;
+    --bg-4: #252119;
+    --border: #2a261f;
+    --border-2: #3a342a;
+    --text: #f0eadc;
+    --text-2: #a39a85;
+    --text-3: #6a6353;
+    --accent: #c4986b;
+    --accent-2: #d4915d;
+    --accent-dim: #6e5238;
+    --danger: #c97064;
+    --success: #8ba368;
+    --warning: #d4a85a;
+    --sans: "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse at top, rgba(196,152,107,0.035) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(212,145,93,0.025) 0%, transparent 60%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    z-index: 999;
+    mix-blend-mode: overlay;
+  }
+  .app {
+    max-width: 760px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(14,13,11,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .brand-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .brand {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .brand em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .brand-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .demo-banner {
+    background: rgba(212,168,90,0.08);
+    border: 1px solid rgba(212,168,90,0.25);
+    color: var(--warning);
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  nav {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    background: transparent;
+    border: none;
+    color: var(--text-3);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    position: relative;
+    white-space: nowrap;
+  }
+  nav button:hover { color: var(--text-2); background: var(--bg-2); }
+  nav button.active {
+    color: var(--accent);
+    background: var(--bg-3);
+  }
+  nav button.active::after {
+    content: "";
+    position: absolute;
+    bottom: -21px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 1px;
+    background: var(--accent);
+  }
+  main {
+    flex: 1;
+    padding: 32px 28px 80px;
+  }
+  .tab { display: none; animation: fadeIn 0.3s ease; }
+  .tab.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  .page-head { margin-bottom: 32px; }
+  .page-title {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--text);
+    line-height: 1.15;
+  }
+  .page-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 10px;
+  }
+  .compose {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border 0.2s;
+  }
+  .compose:focus-within { border-color: var(--accent-dim); }
+  .compose-area {
+    width: 100%;
+    min-height: 200px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    padding: 20px;
+    resize: vertical;
+    outline: none;
+  }
+  .compose-area::placeholder { color: var(--text-3); }
+  .compose-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg-3);
+    border-top: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .compose-hints { display: flex; gap: 14px; flex-wrap: wrap; }
+  .compose-hints span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .compose-hints code {
+    color: var(--accent);
+    background: var(--bg-4);
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-right: 4px;
+    font-size: 11px;
+  }
+  .compose-actions { display: flex; gap: 8px; }
+  .btn {
+    background: var(--bg-4);
+    border: 1px solid var(--border-2);
+    color: var(--text-2);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--bg-3); color: var(--text); border-color: var(--accent-dim); }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--accent-2); }
+  .timeline-head {
+    margin-top: 56px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .timeline-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.4px;
+  }
+  .timeline-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .entry {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+  }
+  .entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .entry-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    min-width: 88px;
+    font-weight: 500;
+  }
+  .entry-weekday {
+    font-size: 14px;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .entry-summary {
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tag:hover { transform: translateY(-1px); }
+  .tag-project {
+    background: rgba(196,152,107,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(196,152,107,0.22);
+  }
+  .tag-person {
+    background: rgba(139,163,104,0.1);
+    color: var(--success);
+    border: 1px solid rgba(139,163,104,0.2);
+  }
+  .tag-todo {
+    background: rgba(212,168,90,0.1);
+    color: var(--warning);
+    border: 1px solid rgba(212,168,90,0.2);
+  }
+  .entry-expand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: color 0.15s;
+    user-select: none;
+  }
+  .entry-expand:hover { color: var(--accent); }
+  .entry-expand-icon {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .entry.expanded .entry-expand-icon { transform: rotate(90deg); }
+  .entry-details {
+    display: none;
+    margin-top: 18px;
+    padding: 18px 22px;
+    background: var(--bg-2);
+    border-left: 2px solid var(--accent-dim);
+    border-radius: 0 6px 6px 0;
+  }
+  .entry.expanded .entry-details { display: block; }
+  .detail-group { margin-bottom: 18px; }
+  .detail-group:last-child { margin-bottom: 0; }
+  .detail-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .detail-item {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.7;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .detail-item:last-child { border-bottom: none; }
+  .ai-insight {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(196,152,107,0.07), rgba(196,152,107,0.02));
+    border: 1px solid rgba(196,152,107,0.18);
+    border-radius: 4px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text);
+    font-style: italic;
+  }
+  .ai-insight::before {
+    content: "AI · Insight";
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-style: normal;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 36px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+  }
+  .section-title:first-of-type { margin-top: 8px; }
+  .section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title.urgent { color: var(--danger); }
+  .section-title.deadline { color: var(--warning); }
+  .section-title.long { color: var(--accent); }
+  .section-title.paused { color: var(--text-3); }
+  .section-title.strong { color: var(--success); }
+  .section-title.warm { color: var(--accent); }
+  .section-title.cool { color: var(--text-3); }
+  .project-grid { display: flex; flex-direction: column; gap: 12px; }
+  .project {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .project::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+  .project.deadline::before { background: var(--warning); }
+  .project.urgent::before { background: var(--danger); opacity: 0.85; }
+  .project.paused::before { background: var(--text-3); opacity: 0.5; }
+  .project:hover { background: var(--bg-3); border-color: var(--border-2); }
+  .project:hover::before { opacity: 1; }
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 14px;
+  }
+  .project-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .project-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-3);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .project-countdown { color: var(--warning); }
+  .project-countdown.urgent { color: var(--danger); }
+  .project-desc {
+    color: var(--text-2);
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .project-status {
+    font-size: 14px;
+    color: var(--text-2);
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    line-height: 1.7;
+  }
+  .project-status::before {
+    content: "AI Status";
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-right: 8px;
+    padding: 2px 6px;
+    background: rgba(196,152,107,0.1);
+    border-radius: 2px;
+    vertical-align: 1px;
+    font-weight: 500;
+  }
+  .conn-grid { display: flex; flex-direction: column; gap: 14px; }
+  .conn {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .conn:hover { background: var(--bg-3); border-color: var(--border-2); }
+  .conn-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .conn-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-4);
+    border: 1px solid var(--border-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .conn-name-block { flex: 1; min-width: 0; }
+  .conn-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .conn-alias {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+    background: var(--bg-4);
+    padding: 1px 7px;
+    border-radius: 3px;
+  }
+  .conn-role {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .conn-strength {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .strength-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border-2);
+  }
+  .strength-dot.on { background: var(--accent); }
+  .conn-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+  .conn-section-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .conn-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .conn-list li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding: 4px 0;
+    line-height: 1.55;
+    position: relative;
+    padding-left: 12px;
+  }
+  .conn-list li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .conn-list.collab li::before {
+    content: "→";
+    color: var(--success);
+    font-size: 11px;
+    top: 5px;
+  }
+  .conn-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .conn-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .conn-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+  .conn-status-dot.warming { background: var(--accent); }
+  .conn-status-dot.cooling { background: var(--warning); }
+  .conn-status-dot.dormant { background: var(--text-3); }
+  .conn-last {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .conn-actions { display: flex; gap: 6px; }
+  .conn-action {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(196,152,107,0.08);
+    border: 1px solid rgba(196,152,107,0.18);
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .conn-action:hover { background: rgba(196,152,107,0.18); }
+  .conn-private-note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(212,168,90,0.06);
+    border: 1px dashed rgba(212,168,90,0.25);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--warning);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .conn-private-note::before {
+    content: "Private · Never shown elsewhere";
+    display: block;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--warning);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .conn-filter {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .conn-filter::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .filter-chip:hover { color: var(--text-2); border-color: var(--border-2); }
+  .filter-chip.active {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: rgba(196,152,107,0.08);
+  }
+  .setting-group {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .setting-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-3);
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 500;
+  }
+  .setting-desc {
+    font-size: 13px;
+    color: var(--text-3);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    padding: 11px 14px;
+    font-family: var(--mono);
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+    transition: border 0.15s;
+  }
+  input[type="text"]:focus, input[type="password"]:focus { border-color: var(--accent); }
+  .button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-3);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    font-weight: 500;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  footer {
+    padding: 24px 28px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border 0.15s;
+  }
+  footer a:hover { border-bottom-color: var(--accent); }
+  @media (max-width: 600px) {
+    .page-title { font-size: 28px; }
+    .timeline-title { font-size: 20px; }
+    .project-name { font-size: 16px; }
+    main { padding: 26px 18px 80px; }
+    header { padding: 22px 18px 18px; }
+    .compose-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+    .entry-head { flex-wrap: wrap; }
+    .conn-body { grid-template-columns: 1fr; gap: 14px; }
+    .conn-footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="demo-banner">Demo · Showing fictional data · Fork to make it yours</div>
+    <div class="brand-row">
+      <div>
+        <div class="brand">hunters<em>lab</em></div>
+        <div class="brand-sub">field journal</div>
+      </div>
+    </div>
+    <nav>
+      <button class="active" data-tab="today">Today</button>
+      <button data-tab="projects">Projects</button>
+      <button data-tab="connections">Connections</button>
+      <button data-tab="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ========== TODAY ========== -->
+    <section class="tab active" id="today">
+      <div class="page-head">
+        <div class="page-title">Tuesday, March 17</div>
+        <div class="page-sub">2026 · Singapore · partly cloudy</div>
+      </div>
+
+      <div class="compose">
+        <textarea class="compose-area" placeholder="What happened today?
+
+(Use voice-to-text on your phone, or just type.)
+
+#FoundryAI Drafted positioning v2
+@Sarah Confirmed advisor terms over coffee
+TODO: Send draft engagement letter by Friday"></textarea>
+        <div class="compose-bar">
+          <div class="compose-hints">
+            <span><code>#tag</code>project</span>
+            <span><code>@name</code>person</span>
+            <span><code>TODO:</code>action</span>
+          </div>
+          <div class="compose-actions">
+            <button class="btn" onclick="toast('Draft saved locally')">Save draft</button>
+            <button class="btn btn-primary" onclick="toast('AI analysis running...')">Done · Analyze</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-head">
+        <div class="timeline-title">Journal</div>
+        <div class="timeline-count">3 entries · past 7 days</div>
+      </div>
+
+      <div id="timeline">
+        <article class="entry" id="e1">
+          <div class="entry-head">
+            <span class="entry-date">03 · 17</span>
+            <span class="entry-weekday">Tuesday</span>
+          </div>
+          <div class="entry-summary">
+            Set up <strong>FoundryAI Consulting LLC</strong>. Met <strong>Marcus</strong> over coffee to scope a possible partnership. Got verbal commitment from <strong>Sarah</strong> to be an advisor.
+          </div>
+          <div class="entry-tags">
+            <span class="tag tag-project">#FoundryAI</span>
+            <span class="tag tag-project">#Partnerships</span>
+            <span class="tag tag-project">#Advisors</span>
+            <span class="tag tag-person">@Sarah</span>
+            <span class="tag tag-person">@Marcus</span>
+            <span class="tag tag-todo">3 todos</span>
+          </div>
+          <div class="entry-expand" onclick="document.getElementById('e1').classList.toggle('expanded')">
+            <span class="entry-expand-icon">▶</span>
+            <span>Expand details</span>
+          </div>
+          <div class="entry-details">
+            <div class="detail-group">
+              <div class="detail-label">Key Progress</div>
+              <div class="detail-item">Incorporated FoundryAI Consulting LLC in Singapore. Director appointed via nominee service.</div>
+              <div class="detail-item">Marcus open to co-marketing for Q2 cohort program. Wants revenue share clarity first.</div>
+              <div class="detail-item">Sarah agreed to advisor role pending term sheet. Equity vs cash tbd.</div>
+            </div>
+            <div class="ai-insight">
+              The week's pattern is clear — moving from solo to a network model. The advisor relationship with Sarah is the highest-leverage piece; pin down terms before her schedule fills.
+            </div>
+          </div>
+        </article>
+
+        <article class="entry" id="e2">
+          <div class="entry-head">
+            <span class="entry-date">03 · 16</span>
+            <span class="entry-weekday">Monday</span>
+          </div>
+          <div class="entry-summary">
+            Drafted <strong>positioning v1</strong> for FoundryAI. Spoke at the AI Builders Meetup — <strong>4 inbound leads</strong> from the talk.
+          </div>
+          <div class="entry-tags">
+            <span class="tag tag-project">#FoundryAI</span>
+            <span class="tag tag-project">#Newsletter</span>
+            <span class="tag tag-project">#Speaking</span>
+            <span class="tag tag-person">@Priya</span>
+            <span class="tag tag-person">@Jamie</span>
+            <span class="tag tag-todo">2 todos</span>
+          </div>
+          <div class="entry-expand" onclick="document.getElementById('e2').classList.toggle('expanded')">
+            <span class="entry-expand-icon">▶</span>
+            <span>Expand details</span>
+          </div>
+          <div class="entry-details">
+            <div class="ai-insight">
+              Public surface area is paying off. The 4 inbound leads validate the positioning. Worth treating speaking gigs as a primary distribution channel for Q2.
+            </div>
+          </div>
+        </article>
+
+        <article class="entry" id="e3">
+          <div class="entry-head">
+            <span class="entry-date">03 · 15</span>
+            <span class="entry-weekday">Sunday</span>
+          </div>
+          <div class="entry-summary">
+            Strategy review. Decided to <strong>deprioritize the FormerCo retainer</strong> and double down on direct consulting clients.
+          </div>
+          <div class="entry-tags">
+            <span class="tag tag-project">#FoundryAI</span>
+            <span class="tag tag-project">#Strategy</span>
+            <span class="tag tag-person">@David</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="tab" id="projects">
+      <div class="page-head">
+        <div class="page-title">Portfolio</div>
+        <div class="page-sub">5 active · 1 paused</div>
+      </div>
+
+      <div class="section-title urgent">Critical · deadline this month</div>
+      <div class="project-grid">
+        <div class="project deadline" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">AI Summit Speaking Slot</div>
+            <div class="project-meta project-countdown">D-36 · 04.22</div>
+          </div>
+          <div class="project-desc">Keynote on 'AI in non-AI companies' at the regional AI Summit</div>
+          <div class="project-status">Slot confirmed. Outline due in 2 weeks. Slides 0%.</div>
+        </div>
+        <div class="project deadline" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">Vibe Coding Practice</div>
+            <div class="project-meta project-countdown">D-24 · 04.10</div>
+          </div>
+          <div class="project-desc">3-week Codex / Claude Code practice — build something real</div>
+          <div class="project-status">Week 1 of 3. Built this journal as practice project.</div>
+        </div>
+      </div>
+
+      <div class="section-title long">Long-term</div>
+      <div class="project-grid">
+        <div class="project" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">FoundryAI Consulting</div>
+            <div class="project-meta">since 03.17</div>
+          </div>
+          <div class="project-desc">Solo AI strategy consulting practice. Positioning v1 in progress.</div>
+          <div class="project-status">Entity formed. Positioning sharpening. Pipeline starting via speaking.</div>
+        </div>
+        <div class="project" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">Newsletter Launch</div>
+            <div class="project-meta">in progress</div>
+          </div>
+          <div class="project-desc">Weekly publication on AI strategy for SEA market</div>
+          <div class="project-status">Domain registered. First issue drafted. Soft launch next Monday.</div>
+        </div>
+        <div class="project" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">Advisor Network Build-out</div>
+            <div class="project-meta">in progress</div>
+          </div>
+          <div class="project-desc">Recruit 3 advisors across product, GTM, and capital</div>
+          <div class="project-status">1 of 3 verbally committed (Sarah). Pipeline of 4 conversations.</div>
+        </div>
+      </div>
+
+      <div class="section-title paused">Paused</div>
+      <div class="project-grid">
+        <div class="project paused" onclick="toast('Project details')">
+          <div class="project-head">
+            <div class="project-name">FormerCo Retainer</div>
+            <div class="project-meta">cooling</div>
+          </div>
+          <div class="project-desc">Part-time retainer with previous employer</div>
+          <div class="project-status">Decided to deprioritize in favor of direct consulting.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONNECTIONS ========== -->
+    <section class="tab" id="connections">
+      <div class="page-head">
+        <div class="page-title">Network</div>
+        <div class="page-sub">6 connections · 2 active · 2 warming</div>
+      </div>
+
+      <div class="conn-filter">
+        <span class="filter-chip active">All · 6</span>
+        <span class="filter-chip">Active</span>
+        <span class="filter-chip">Warming</span>
+        <span class="filter-chip">Cooling</span>
+        <span class="filter-chip">Dormant</span>
+        <span class="filter-chip">+ New</span>
+      </div>
+
+      <div class="section-title strong">Active · strong relations</div>
+      <div class="conn-grid">
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">S</div>
+            <div class="conn-name-block">
+              <div class="conn-name">Sarah Lim <span class="conn-alias">Advisor</span></div>
+              <div class="conn-role">VP Product at a regional tech company. Pragmatic, well-networked.</div>
+            </div>
+            <div class="conn-strength" title="4/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What she offers</div>
+              <ul class="conn-list">
+                <li>Product leadership experience at scale</li>
+                <li>Network into corporate buyers in SEA</li>
+                <li>Pattern recognition on early-stage mistakes</li>
+                <li>2-3 warm intros per quarter</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Formalize advisor agreement (0.25% / 2y)</li>
+                <li>Pipe early clients via her intros</li>
+                <li>Quarterly positioning + pricing review</li>
+                <li>Long-term: board seat if FoundryAI scales</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-private-note">
+            Demo placeholder — this field is for your honest assessment of the relationship. Never surfaced in summaries or AI outputs.
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot"></span>
+              <span>active</span>
+            </div>
+            <div class="conn-last">last touched · 03.17</div>
+            <div class="conn-actions">
+              <span class="conn-action">2 entries</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">M</div>
+            <div class="conn-name-block">
+              <div class="conn-name">Marcus Zhang <span class="conn-alias">Peer Founder</span></div>
+              <div class="conn-role">Founder of AI dev tools startup, YC-backed. Adjacent, not competitive.</div>
+            </div>
+            <div class="conn-strength" title="4/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What he offers</div>
+              <ul class="conn-list">
+                <li>Engineering depth I lack</li>
+                <li>Investor relationships in SF and SG</li>
+                <li>Audience overlap with my target market</li>
+                <li>Honest peer perspective</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Co-host a Q2 cohort program (50/50 tbd)</li>
+                <li>Cross-promote newsletters</li>
+                <li>Technical co-founder candidate if needed</li>
+                <li>Refer enterprise leads needing both</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot"></span>
+              <span>active</span>
+            </div>
+            <div class="conn-last">last touched · 03.17</div>
+            <div class="conn-actions">
+              <span class="conn-action">1 entry</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title warm">Warming · in evaluation</div>
+      <div class="conn-grid">
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">P</div>
+            <div class="conn-name-block">
+              <div class="conn-name">Priya Raj <span class="conn-alias">Marketing</span></div>
+              <div class="conn-role">Independent growth marketing consultant. Frequent collaborator.</div>
+            </div>
+            <div class="conn-strength" title="3/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What she offers</div>
+              <ul class="conn-list">
+                <li>Brand and positioning craft</li>
+                <li>Content distribution expertise</li>
+                <li>Designer and copywriter network</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Engage on FoundryAI positioning v2</li>
+                <li>Co-author 1 newsletter piece / month</li>
+                <li>Refer for client GTM work</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot warming"></span>
+              <span>warming</span>
+            </div>
+            <div class="conn-last">last touched · 03.16</div>
+            <div class="conn-actions">
+              <span class="conn-action">1 entry</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">J</div>
+            <div class="conn-name-block">
+              <div class="conn-name">Jamie Tan <span class="conn-alias">Recruiter</span></div>
+              <div class="conn-role">Independent recruiter focused on AI engineering roles in SEA.</div>
+            </div>
+            <div class="conn-strength" title="3/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What he offers</div>
+              <ul class="conn-list">
+                <li>Deep AI engineer candidate pool</li>
+                <li>Warm intros to hiring managers</li>
+                <li>Market intelligence on comp bands</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Reciprocal referral arrangement</li>
+                <li>Share market intel for my client briefs</li>
+                <li>Joint placement structure for niche roles</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot warming"></span>
+              <span>warming</span>
+            </div>
+            <div class="conn-last">last touched · 03.16</div>
+            <div class="conn-actions">
+              <span class="conn-action">1 entry</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title cool">Cooling · keep at distance</div>
+      <div class="conn-grid">
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">D</div>
+            <div class="conn-name-block">
+              <div class="conn-name">David Kim <span class="conn-alias">Capital</span></div>
+              <div class="conn-role">Angel investor. Indicated potential pre-seed interest 'when right'.</div>
+            </div>
+            <div class="conn-strength" title="2/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What he offers</div>
+              <ul class="conn-list">
+                <li>Capital</li>
+                <li>Operator perspective</li>
+                <li>Network of other angels</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Not pushing — let it cool naturally</li>
+                <li>Quarterly update when there's substance</li>
+                <li>Revisit if/when growth capital needed</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot cooling"></span>
+              <span>cooling</span>
+            </div>
+            <div class="conn-last">last touched · 03.15</div>
+            <div class="conn-actions">
+              <span class="conn-action">1 entry</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn">
+          <div class="conn-head">
+            <div class="conn-avatar">R</div>
+            <div class="conn-name-block">
+              <div class="conn-name">Rachel Wong <span class="conn-alias">Dormant</span></div>
+              <div class="conn-role">Former colleague. Strong relationship in the past, not active now.</div>
+            </div>
+            <div class="conn-strength" title="2/5">
+              <span class="strength-dot on"></span>
+              <span class="strength-dot on"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+              <span class="strength-dot"></span>
+            </div>
+          </div>
+          <div class="conn-body">
+            <div>
+              <div class="conn-section-title">What she offers</div>
+              <ul class="conn-list">
+                <li>Domain expertise in enterprise procurement</li>
+              </ul>
+            </div>
+            <div>
+              <div class="conn-section-title">Potential collaboration</div>
+              <ul class="conn-list collab">
+                <li>Reconnect in Q3 over coffee</li>
+                <li>No specific ask — relationship maintenance</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conn-footer">
+            <div class="conn-status">
+              <span class="conn-status-dot dormant"></span>
+              <span>dormant</span>
+            </div>
+            <div class="conn-last">last touched · 02.04</div>
+            <div class="conn-actions">
+              <span class="conn-action">0 entries</span>
+              <span class="conn-action">+ log</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="tab" id="settings">
+      <div class="page-head">
+        <div class="page-title">Settings</div>
+        <div class="page-sub">configuration · data · sync</div>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">Supabase connection (cloud sync)</label>
+        <div class="setting-desc">Free tier is enough for personal use. Sync across phone and desktop. <a href="https://supabase.com" style="color:var(--accent)">supabase.com</a></div>
+        <input type="text" placeholder="https://your-project.supabase.co" />
+        <input type="password" placeholder="anon key" style="margin-top:8px"/>
+        <div class="button-row">
+          <button class="btn btn-primary" onclick="toast('Configuration saved')">Save</button>
+          <button class="btn" onclick="toast('Testing connection...')">Test</button>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">Claude API key</label>
+        <div class="setting-desc">For AI analysis, insights, and project summaries. Stored locally.</div>
+        <input type="password" placeholder="sk-ant-api03-..." />
+        <div class="button-row">
+          <button class="btn btn-primary" onclick="toast('Key saved')">Save</button>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">Data management</label>
+        <div class="setting-desc">All data is yours. Export as JSON anytime.</div>
+        <div class="button-row">
+          <button class="btn" onclick="toast('Exported as JSON')">Export</button>
+          <button class="btn" onclick="toast('Choose file...')">Import</button>
+          <button class="btn" onclick="toast('Confirmation required')" style="color:var(--danger);border-color:var(--danger)">Reset</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="https://github.com/" target="_blank">github</a> · open source · MIT
+  </footer>
+</div>
+
+<div class="toast" id="toast">message</div>
+
+<script>
+  document.querySelectorAll('nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+
+</body>
+</html>

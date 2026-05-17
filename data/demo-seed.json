@@ -1,0 +1,252 @@
+{
+  "_meta": {
+    "description": "Demo seed data for hunterslab Field Journal",
+    "persona": "Alex Chen, fictional solo founder building an AI consulting practice in Singapore",
+    "note": "All names, companies, and events are fictional. Replace with your own when forking.",
+    "generated": "2026-03-17"
+  },
+
+  "entries": [
+    {
+      "id": "entry-0317",
+      "date": "2026-03-17",
+      "weekday": "Tuesday",
+      "summary": "Set up FoundryAI Consulting LLC. Met Marcus over coffee to scope a possible partnership. Got verbal commitment from Sarah to be an advisor.",
+      "tags": {
+        "projects": ["FoundryAI", "Partnerships", "Advisor Network"],
+        "people": ["Marcus", "Sarah"],
+        "todos": 3
+      },
+      "details": [
+        "Incorporated FoundryAI Consulting LLC in Singapore. Director appointed via nominee service.",
+        "Marcus open to co-marketing for Q2 cohort program. Wants revenue share clarity first.",
+        "Sarah agreed to advisor role pending term sheet. Equity vs cash tbd."
+      ],
+      "ai_insight": "The week's pattern is clear — moving from solo to a network model. The advisor relationship with Sarah is the highest-leverage piece; pin down terms before her schedule fills."
+    },
+    {
+      "id": "entry-0316",
+      "date": "2026-03-16",
+      "weekday": "Monday",
+      "summary": "Drafted positioning v1 for FoundryAI. Spoke at the AI Builders Meetup — 4 inbound leads from the talk.",
+      "tags": {
+        "projects": ["FoundryAI", "Newsletter", "Public Speaking"],
+        "people": ["Priya", "Jamie"],
+        "todos": 2
+      },
+      "details": [
+        "Positioning: 'Embedded AI strategy for early-stage product teams.' Tighter than v0.",
+        "Meetup talk well-received. Priya wants intro to enterprise design contact.",
+        "Jamie reached out separately about a recruiting collaboration."
+      ],
+      "ai_insight": "Public surface area is paying off. The 4 inbound leads validate the positioning. Worth treating speaking gigs as a primary distribution channel for Q2."
+    },
+    {
+      "id": "entry-0315",
+      "date": "2026-03-15",
+      "weekday": "Sunday",
+      "summary": "Strategy review. Decided to deprioritize the FormerCo retainer and double down on direct consulting clients.",
+      "tags": {
+        "projects": ["FoundryAI", "Strategy"],
+        "people": ["David"],
+        "todos": 1
+      },
+      "details": [
+        "FormerCo retainer feels increasingly like a constraint, not a runway.",
+        "Direct consulting clients have 3x the per-hour rate.",
+        "David's intro to the angel group still pending — not blocking."
+      ],
+      "ai_insight": "The hardest call you made this week was letting the FormerCo retainer cool. Independence has a price tag and you just paid it."
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "proj-foundryai",
+      "name": "FoundryAI Consulting",
+      "type": "long_term",
+      "description": "Solo AI strategy consulting practice. Positioning v1 in progress.",
+      "ai_status": "Entity formed. Positioning sharpening. Pipeline starting via speaking.",
+      "status": "active",
+      "linked_entries": ["entry-0317", "entry-0316", "entry-0315"]
+    },
+    {
+      "id": "proj-conf",
+      "name": "AI Summit Speaking Slot",
+      "type": "deadline",
+      "deadline": "2026-04-22",
+      "description": "Keynote on 'AI in non-AI companies' at the regional AI Summit.",
+      "ai_status": "Slot confirmed. Outline due in 2 weeks. Slides 0%.",
+      "status": "active"
+    },
+    {
+      "id": "proj-newsletter",
+      "name": "Newsletter Launch",
+      "type": "long_term",
+      "description": "Weekly publication on AI strategy for SEA market.",
+      "ai_status": "Domain registered. First issue drafted. Soft launch next Monday.",
+      "status": "active"
+    },
+    {
+      "id": "proj-advisor",
+      "name": "Advisor Network Build-out",
+      "type": "long_term",
+      "description": "Recruit 3 advisors across product, GTM, and capital.",
+      "ai_status": "1 of 3 verbally committed (Sarah). Pipeline of 4 conversations.",
+      "status": "active"
+    },
+    {
+      "id": "proj-vibe",
+      "name": "Vibe Coding Practice",
+      "type": "deadline",
+      "deadline": "2026-04-10",
+      "description": "3-week Codex / Claude Code practice. Build a tool that solves a real problem.",
+      "ai_status": "Week 1 of 3. Built this journal as practice project.",
+      "status": "active"
+    },
+    {
+      "id": "proj-former",
+      "name": "FormerCo Retainer",
+      "type": "long_term",
+      "description": "Part-time retainer with previous employer.",
+      "ai_status": "Cooling. Decided to deprioritize in favor of direct consulting.",
+      "status": "paused"
+    }
+  ],
+
+  "connections": [
+    {
+      "id": "conn-sarah",
+      "name": "Sarah Lim",
+      "alias": "Advisor",
+      "avatar": "S",
+      "role": "VP Product at a regional tech company. Pragmatic, well-networked, fast decisions.",
+      "strength": 4,
+      "status": "active",
+      "resources": [
+        "Product leadership experience at scale",
+        "Network into corporate buyers in SEA",
+        "Pattern recognition on early-stage product mistakes",
+        "Willing to make 2-3 warm intros per quarter"
+      ],
+      "potential": [
+        "Formalize advisor agreement (0.25% equity over 2 years)",
+        "Pipe early clients through her warm intros",
+        "Quarterly review session on positioning + pricing",
+        "Long-term: potential board seat if FoundryAI scales"
+      ],
+      "private_note": "Demo placeholder — use this field for your own honest assessment of the relationship.",
+      "last_touched": "2026-03-17",
+      "linked_entries": 2
+    },
+    {
+      "id": "conn-marcus",
+      "name": "Marcus Zhang",
+      "alias": "Peer Founder",
+      "avatar": "M",
+      "role": "Founder of an AI dev tools startup, YC-backed. Building in adjacent space, not competitive.",
+      "strength": 4,
+      "status": "active",
+      "resources": [
+        "Engineering depth I lack",
+        "Investor relationships in SF and SG",
+        "Audience overlap with my target market",
+        "Honest peer perspective"
+      ],
+      "potential": [
+        "Co-host a Q2 cohort program (50/50 split tbd)",
+        "Cross-promote newsletters",
+        "Future: technical co-founder candidate if I need one",
+        "Refer enterprise leads that need both consulting + tooling"
+      ],
+      "private_note": "Demo placeholder — keep your honest read of motivations and trust level here.",
+      "last_touched": "2026-03-17",
+      "linked_entries": 1
+    },
+    {
+      "id": "conn-priya",
+      "name": "Priya Raj",
+      "alias": "Marketing Collab",
+      "avatar": "P",
+      "role": "Independent growth marketing consultant. Frequent collaborator on conference content.",
+      "strength": 3,
+      "status": "warming",
+      "resources": [
+        "Brand and positioning craft",
+        "Content distribution expertise",
+        "Designer and copywriter network"
+      ],
+      "potential": [
+        "Engage on FoundryAI positioning v2",
+        "Co-author 1 newsletter piece per month",
+        "Refer her for client GTM work"
+      ],
+      "private_note": "Demo placeholder — useful for tracking working chemistry over time.",
+      "last_touched": "2026-03-16",
+      "linked_entries": 1
+    },
+    {
+      "id": "conn-jamie",
+      "name": "Jamie Tan",
+      "alias": "Recruiter",
+      "avatar": "J",
+      "role": "Independent recruiter focused on AI engineering roles in SEA.",
+      "strength": 3,
+      "status": "warming",
+      "resources": [
+        "Deep AI engineer candidate pool",
+        "Warm intros to hiring managers",
+        "Market intelligence on comp bands"
+      ],
+      "potential": [
+        "Reciprocal referral arrangement",
+        "Share market intel for my consulting briefs",
+        "Possible joint placement structure for specialized roles"
+      ],
+      "private_note": "Demo placeholder.",
+      "last_touched": "2026-03-16",
+      "linked_entries": 1
+    },
+    {
+      "id": "conn-david",
+      "name": "David Kim",
+      "alias": "Capital",
+      "avatar": "D",
+      "role": "Angel investor and operator. Has indicated potential pre-seed interest 'when the time is right'.",
+      "strength": 2,
+      "status": "cooling",
+      "resources": [
+        "Capital",
+        "Operator perspective",
+        "Network of other angels"
+      ],
+      "potential": [
+        "Not pushing — let it cool naturally",
+        "Send quarterly update when there's substance",
+        "Revisit if/when FoundryAI needs growth capital"
+      ],
+      "private_note": "Demo placeholder.",
+      "last_touched": "2026-03-15",
+      "linked_entries": 1
+    },
+    {
+      "id": "conn-rachel",
+      "name": "Rachel Wong",
+      "alias": "Dormant",
+      "avatar": "R",
+      "role": "Former colleague. Strong relationship in the past, not active currently.",
+      "strength": 2,
+      "status": "dormant",
+      "resources": [
+        "Domain expertise in enterprise procurement"
+      ],
+      "potential": [
+        "Reconnect in Q3 over coffee",
+        "No specific ask — relationship maintenance only"
+      ],
+      "private_note": "Demo placeholder.",
+      "last_touched": "2026-02-04",
+      "linked_entries": 0
+    }
+  ]
+}
